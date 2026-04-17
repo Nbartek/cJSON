@@ -1,0 +1,21 @@
+# build
+FROM ubuntu:24.04 AS builder
+RUN apt-get update && apt-get install -y gcc make git && rm -rf /var/lib/apt/lists/*
+WORKDIR /workspace
+COPY . .
+RUN make all
+
+# testowanie
+FROM builder AS tester
+RUN make test
+
+# środowisko
+FROM alpine:latest AS deploy
+WORKDIR /app/lib
+# tylko binarki z builda
+COPY --from=builder /workspace/cJSON.o .
+COPY --from=builder /workspace/libcjson.so* . 
+COPY --from=builder /workspace/cJSON.h .
+
+# Smoke test - sprawdzenie czy pliki tam są
+CMD["sh", "-c", "echo 'Smoke test' && ls -la /app/lib"]
