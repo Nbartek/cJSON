@@ -2,7 +2,9 @@
 # --- ETAP 1: BUILD ---
 FROM ubuntu:24.04 AS builder
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends gcc make git libc6-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    apt-get install -y -o Acquire::ForceIPv4=true --no-install-recommends gcc make git libc6-dev && \
+    rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace
 COPY . .
 RUN make all
