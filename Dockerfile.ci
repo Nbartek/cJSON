@@ -18,4 +18,4 @@ COPY --from=builder /workspace/libcjson.so* .
 COPY --from=builder /workspace/cJSON.h .
 
 # Smoke test - sprawdzenie czy pliki tam są
-CMD["sh", "-c", "echo 'Smoke test' && ls -la /app/lib"]
+CMD ["sh", "-c", "echo 'Smoke test' && ls -la /app/lib"]
